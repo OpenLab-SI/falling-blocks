@@ -22,7 +22,7 @@ public class Square {
         this.clicked = false;
     }
 
-    // kvadrat se izrise sam, povemo mu le, s katerim batchom
+    // kvadrat se izrise sam, povemo mu le, s katerim batch-om
     void draw(SpriteBatch batch) {
         if (!clicked) {
             batch.setColor(color);
