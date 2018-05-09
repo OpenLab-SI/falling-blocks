@@ -22,6 +22,23 @@ public class FallingBlocks extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        if (Gdx.input.isButtonPressed(0)) {
+            int x = Gdx.input.getX();
+            int y = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+            if (x >= 0 && x <= 0 + 100 && y >= 0 && y <= 0 + 100) {
+
+            }
+
+            if (x >= 200 && x <= 200 + 100 && y >= 150 && y <= 150 + 100) {
+
+            }
+
+            if (x >= 400 && x <= 400 + 100 && y >= 300 && y <= 300 + 100) {
+
+            }
+        }
+
         // izrisi igro
         batch.begin();
 
