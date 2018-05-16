@@ -6,11 +6,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class FallingBlocks extends ApplicationAdapter {
     SpriteBatch batch;
     Texture img;
+
     OrthographicCamera camera;
+    FitViewport viewport;
 
     boolean firstClicked;
     boolean secondClicked;
@@ -19,6 +22,11 @@ public class FallingBlocks extends ApplicationAdapter {
     @Override
     public void create() {
         camera = new OrthographicCamera();
+
+        // ustvari viewport, ki omeji velikost igre na velikost okna
+        viewport = new FitViewport(720, 480, camera);
+        // centriraj igro
+        viewport.apply(true);
 
         batch = new SpriteBatch();
         img = new Texture("square.png");
@@ -74,12 +82,9 @@ public class FallingBlocks extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height) {
-        // popravi velikost kamere, tako da odreze odvecni del igre
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
-
-        // premakni kamero v originalni center igre
-        camera.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
+        // posodobi viewport z novo velikostjo zalona
+        // (popravi parametre kamere, da ta prikazuje celo igro, omejeno z velikostjo okna)
+        viewport.update(width, height);
     }
 
     @Override
