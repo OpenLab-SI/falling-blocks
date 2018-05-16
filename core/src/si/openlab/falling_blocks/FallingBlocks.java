@@ -3,12 +3,14 @@ package si.openlab.falling_blocks;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class FallingBlocks extends ApplicationAdapter {
     SpriteBatch batch;
     Texture img;
+    OrthographicCamera camera;
 
     boolean firstClicked;
     boolean secondClicked;
@@ -16,6 +18,8 @@ public class FallingBlocks extends ApplicationAdapter {
 
     @Override
     public void create() {
+        camera = new OrthographicCamera();
+
         batch = new SpriteBatch();
         img = new Texture("square.png");
     }
@@ -43,6 +47,10 @@ public class FallingBlocks extends ApplicationAdapter {
             }
         }
 
+        // uporabi kamero
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+
         // izrisi igro
         batch.begin();
 
@@ -62,6 +70,16 @@ public class FallingBlocks extends ApplicationAdapter {
         }
 
         batch.end();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        // popravi velikost kamere, tako da odreze odvecni del igre
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+
+        // premakni kamero v originalni center igre
+        camera.position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
     }
 
     @Override
