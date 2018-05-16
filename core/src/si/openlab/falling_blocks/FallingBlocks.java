@@ -2,6 +2,7 @@ package si.openlab.falling_blocks;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,7 +11,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class FallingBlocks extends ApplicationAdapter {
     SpriteBatch batch;
+
     Texture img;
+    AssetManager assets;
 
     OrthographicCamera camera;
     FitViewport viewport;
@@ -21,6 +24,13 @@ public class FallingBlocks extends ApplicationAdapter {
 
     @Override
     public void create() {
+        assets = new AssetManager();
+
+        // zacne nalagati square.png kot teksturo
+        assets.load("square.png", Texture.class);
+        // pocaka, da se nalozijo vse datoteke
+        assets.finishLoading();
+
         camera = new OrthographicCamera();
 
         // ustvari viewport, ki omeji velikost igre na velikost okna
@@ -29,7 +39,9 @@ public class FallingBlocks extends ApplicationAdapter {
         viewport.apply(true);
 
         batch = new SpriteBatch();
-        img = new Texture("square.png");
+
+        // slika kvadrata pride iz vzdrzevalca virov
+        img = assets.get("square.png");
     }
 
     @Override
