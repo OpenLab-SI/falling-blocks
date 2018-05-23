@@ -3,16 +3,19 @@ package si.openlab.falling_blocks;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class FallingBlocks extends ApplicationAdapter {
     AssetManager assets;
     OrthographicCamera camera;
     FitViewport viewport;
+    Stage stage;
 
     @Override
     public void create() {
@@ -29,6 +32,15 @@ public class FallingBlocks extends ApplicationAdapter {
         viewport = new FitViewport(720, 480, camera);
         // centriraj igro
         viewport.apply(true);
+
+        // dodana scena (ali oder) nase igre
+        // na tem "stage" se bo nahajala vecina elementov nase igre
+        stage = new Stage(viewport);
+
+        // dodamo kvadrate
+        stage.addActor(new Square(0, 0, Color.RED, assets));
+        stage.addActor(new Square(150, 150, Color.BLUE, assets));
+        stage.addActor(new Square(300, 300, Color.GREEN, assets));
     }
 
     @Override
@@ -39,6 +51,9 @@ public class FallingBlocks extends ApplicationAdapter {
 
         // uporabi kamero
         camera.update();
+
+        // izrisemo celotno sceno
+        stage.draw();
     }
 
     @Override
