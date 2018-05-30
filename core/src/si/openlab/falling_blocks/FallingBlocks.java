@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -36,6 +38,9 @@ public class FallingBlocks extends ApplicationAdapter {
         // dodana scena (ali oder) nase igre
         // na tem "stage" se bo nahajala vecina elementov nase igre
         stage = new Stage(viewport);
+
+        // nastavimo, da stage procesira vhode (klike ipd.)
+        Gdx.input.setInputProcessor(stage);
 
         // dodamo kvadrate
         stage.addActor(new Square(0, 0, Color.RED, assets));
