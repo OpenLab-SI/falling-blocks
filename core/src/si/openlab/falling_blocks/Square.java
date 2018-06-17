@@ -3,6 +3,8 @@ package si.openlab.falling_blocks;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -32,10 +34,10 @@ public class Square extends Actor {
         // doloci lastnoti telesa (kvadata) (znotraj fizikalnega pogona)
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.fixedRotation = true;
+        bodyDef.fixedRotation = false;
     }
 
-    Texture img;
+    TextureRegion img;
     Body body;
     FallingBlocks game;
 
@@ -46,7 +48,8 @@ public class Square extends Actor {
         setPosition(x, y);
         setColor(color);
 
-        img = game.assets.get("square.png");
+        Texture texture = game.assets.get("square.png");
+        img = new TextureRegion(texture);
 
         addListener(new InputListener() {
             @Override
@@ -83,11 +86,12 @@ public class Square extends Actor {
     public void act(float delta) {
         Vector2 position = body.getPosition();
         setPosition(position.x - 0.5f, position.y - 0.5f);
+        setRotation(body.getAngle() * 180 / MathUtils.PI);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor());
-        batch.draw(img, getX(), getY(), getWidth(), getHeight());
+        batch.draw(img, getX(), getY(), 0.5f, 0.5f, getWidth(), getHeight(), 1, 1, getRotation());
     }
 }
