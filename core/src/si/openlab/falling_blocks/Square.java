@@ -12,7 +12,7 @@ public class Square extends Actor {
     Texture img;
 
     Square(float x, float y, Color color, AssetManager assets) {
-        setSize(100, 100);
+        setSize(1, 1);
         setPosition(x, y);
         setColor(color);
 
