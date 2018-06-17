@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -18,6 +19,7 @@ public class FallingBlocks extends ApplicationAdapter {
     FitViewport viewport;
     Stage stage;
     World world;
+    Box2DDebugRenderer debugRenderer;
 
     @Override
     public void create() {
@@ -49,6 +51,9 @@ public class FallingBlocks extends ApplicationAdapter {
         stage.addActor(new Square(0, 0, Color.RED, assets));
         stage.addActor(new Square(1.5f, 1.5f, Color.BLUE, assets));
         stage.addActor(new Square(3, 3, Color.GREEN, assets));
+
+        // omogoca izris fizikalnega modela igre (uporabno za iskanje napak)
+        debugRenderer = new Box2DDebugRenderer();
     }
 
     @Override
@@ -62,6 +67,9 @@ public class FallingBlocks extends ApplicationAdapter {
 
         // izrisemo celotno sceno
         stage.draw();
+
+        // izrisemo fizikalni model igre
+        debugRenderer.render(world, camera.combined);
     }
 
     @Override
