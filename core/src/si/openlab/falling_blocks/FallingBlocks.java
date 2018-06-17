@@ -62,6 +62,9 @@ public class FallingBlocks extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // simuliranje fizike sveta
+        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
+
         // uporabi kamero
         camera.update();
 
