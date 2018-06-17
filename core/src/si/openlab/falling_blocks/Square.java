@@ -3,6 +3,7 @@ package si.openlab.falling_blocks;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -76,6 +77,12 @@ public class Square extends Actor {
             // doda telesu kvadrat (sele tu to telo postane kvadrat)
             body.createFixture(fixtureDef);
         }
+    }
+
+    @Override
+    public void act(float delta) {
+        Vector2 position = body.getPosition();
+        setPosition(position.x - 0.5f, position.y - 0.5f);
     }
 
     @Override

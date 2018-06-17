@@ -68,6 +68,10 @@ public class FallingBlocks extends ApplicationAdapter {
         // uporabi kamero
         camera.update();
 
+        // posodobi polozaje kvadratov
+        // bolj splosno, posodobi lastnosti, ki so odvisne od fizike
+        stage.act();
+
         // izrisemo celotno sceno
         stage.draw();
 
