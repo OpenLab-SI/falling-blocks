@@ -49,6 +49,7 @@ public class Square extends Actor {
         setColor(color);
 
         Texture texture = game.assets.get("square.png");
+        // TextureRegion je del teksture, v temu primeru, cela tekstura
         img = new TextureRegion(texture);
 
         addListener(new InputListener() {
@@ -74,6 +75,7 @@ public class Square extends Actor {
             body = null;
         } else {
             // postavi kvadrat na pravi polozaj
+            // polozaji v Box2D (fiziki) so v srediscu predmetov, v libGDX (graficni del) pa v levem spodnjem kotu
             bodyDef.position.set(getX() + 0.5f, getY() + 0.5f);
             // ustvari telo
             body = game.world.createBody(bodyDef);
@@ -85,13 +87,17 @@ public class Square extends Actor {
     @Override
     public void act(float delta) {
         Vector2 position = body.getPosition();
+        // polozaji v Box2D (fiziki) so v srediscu predmetov, v libGDX (graficni del) pa v levem spodnjem kotu
         setPosition(position.x - 0.5f, position.y - 0.5f);
+        // koti v Box2D (fiziki) so v radianih, libGDX (graficni del) pa uporablja stopinje
         setRotation(body.getAngle() * 180 / MathUtils.PI);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.setColor(getColor());
+        // za nastavljanje rotacije, je potrebno podati se nekaj drugih stvari
+        // tukaj podamo: polozaj (x in y), center vrtenja (x in y), velikost (sirina in visina), razteg (po x in y), rotacijo
         batch.draw(img, getX(), getY(), 0.5f, 0.5f, getWidth(), getHeight(), 1, 1, getRotation());
     }
 }
