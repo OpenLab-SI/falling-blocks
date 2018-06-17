@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
@@ -46,13 +47,6 @@ public class Square extends Actor {
 
         img = game.assets.get("square.png");
 
-        // postavi kvadrat na pravi polozaj
-        bodyDef.position.set(getX() + 0.5f, getY() + 0.5f);
-        // ustvari telo
-        body = game.world.createBody(bodyDef);
-        // doda telesu kvadrat (sele tu to telo postane kvadrat)
-        body.createFixture(fixtureDef);
-
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -63,6 +57,25 @@ public class Square extends Actor {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void setParent(Group parent) {
+        super.setParent(parent);
+
+        if (parent == null) {
+            // odstrani telo iz sveta
+            game.world.destroyBody(body);
+            // pobrise telo
+            body = null;
+        } else {
+            // postavi kvadrat na pravi polozaj
+            bodyDef.position.set(getX() + 0.5f, getY() + 0.5f);
+            // ustvari telo
+            body = game.world.createBody(bodyDef);
+            // doda telesu kvadrat (sele tu to telo postane kvadrat)
+            body.createFixture(fixtureDef);
+        }
     }
 
     @Override
