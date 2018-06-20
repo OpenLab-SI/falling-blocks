@@ -94,6 +94,9 @@ public class Square extends Actor {
         setPosition(position.x - halfSize, position.y - halfSize);
         // koti v Box2D (fiziki) so v radianih, libGDX (graficni del) pa uporablja stopinje
         setRotation(body.getAngle() * 180 / MathUtils.PI);
+
+        // potisnemo kocko navzdol
+        body.setLinearVelocity(0, -3);
     }
 
     @Override

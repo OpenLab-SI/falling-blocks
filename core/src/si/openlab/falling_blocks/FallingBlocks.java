@@ -42,7 +42,7 @@ public class FallingBlocks extends ApplicationAdapter {
         stage = new Stage(viewport);
 
         // dodan svet za fizikalne objekte
-        world = new World(new Vector2(0, -9.8f), true);
+        world = new World(new Vector2(0, 0), true);
 
         // nastavimo, da stage procesira vhode (klike ipd.)
         Gdx.input.setInputProcessor(stage);
