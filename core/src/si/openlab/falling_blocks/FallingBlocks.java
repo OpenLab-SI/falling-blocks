@@ -47,12 +47,7 @@ public class FallingBlocks extends ApplicationAdapter {
 
         // nastavimo, da stage procesira vhode (klike ipd.)
         Gdx.input.setInputProcessor(stage);
-
-        // dodamo kvadrate
-        stage.addActor(new Square(0, 0, Color.RED, this));
-        stage.addActor(new Square(1.5f, 1.5f, Color.BLUE, this));
-        stage.addActor(new Square(3, 3, Color.GREEN, this));
-
+        
         // omogoca izris fizikalnega modela igre (uporabno za iskanje napak)
         debugRenderer = new Box2DDebugRenderer();
     }
