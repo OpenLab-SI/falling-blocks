@@ -19,6 +19,14 @@ public class Square extends Actor {
     static float size = 1;
     static float halfSize = size / 2;
 
+    static Color[] colors = {
+            Color.valueOf("#ffb133"),
+            Color.valueOf("#33ff6d"),
+            Color.valueOf("#33c2ff"),
+            Color.valueOf("#ff3333"),
+            Color.valueOf("#c233ff")
+    };
+
     // staticna polja za definicije oblike in telesa
     // (staticna, ker so enaka za vse kvadrate)
     static BodyDef bodyDef;

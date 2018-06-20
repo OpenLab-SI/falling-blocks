@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -20,6 +21,7 @@ public class FallingBlocks extends ApplicationAdapter {
     Stage stage;
     World world;
     Box2DDebugRenderer debugRenderer;
+
     float timer;
 
     @Override
@@ -47,7 +49,7 @@ public class FallingBlocks extends ApplicationAdapter {
 
         // nastavimo, da stage procesira vhode (klike ipd.)
         Gdx.input.setInputProcessor(stage);
-        
+
         // omogoca izris fizikalnega modela igre (uporabno za iskanje napak)
         debugRenderer = new Box2DDebugRenderer();
     }
@@ -62,7 +64,12 @@ public class FallingBlocks extends ApplicationAdapter {
 
         if (timer > 0.5f) {
             timer -= 0.5f;
-            stage.addActor(new Square(3, 3, Color.GREEN, this));
+
+            float x = MathUtils.random(7.2f - Square.size);
+            float y = 4.8f;
+            Color color = Square.colors[MathUtils.random(Square.colors.length - 1)];
+
+            stage.addActor(new Square(x, y, color, this));
         }
 
         // simuliranje fizike sveta
