@@ -20,6 +20,7 @@ public class FallingBlocks extends ApplicationAdapter {
     Stage stage;
     World world;
     Box2DDebugRenderer debugRenderer;
+    float timer;
 
     @Override
     public void create() {
@@ -61,6 +62,13 @@ public class FallingBlocks extends ApplicationAdapter {
         // pobrisi zaslon
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        timer += Gdx.graphics.getDeltaTime();
+
+        if (timer > 0.5f) {
+            timer -= 0.5f;
+            stage.addActor(new Square(3, 3, Color.GREEN, this));
+        }
 
         // simuliranje fizike sveta
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
