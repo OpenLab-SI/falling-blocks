@@ -3,10 +3,17 @@ package si.openlab.falling_blocks;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -16,10 +23,14 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class FallingBlocks extends ApplicationAdapter {
     AssetManager assets;
+    BitmapFont font;
+
     OrthographicCamera camera;
     FitViewport viewport;
+
     Stage stage;
     World world;
+
     Box2DDebugRenderer debugRenderer;
 
     float timer;
@@ -28,10 +39,22 @@ public class FallingBlocks extends ApplicationAdapter {
     public void create() {
         assets = new AssetManager();
 
+        FileHandleResolver resolver = new InternalFileHandleResolver();
+        assets.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+        assets.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+
+        FreeTypeFontLoaderParameter fontParameter = new FreeTypeFontLoaderParameter();
+        fontParameter.fontFileName = "whitrabt.ttf";
+        fontParameter.fontParameters.size = 24;
+
         // zacne nalagati square.png kot teksturo
         assets.load("square.png", Texture.class);
+        assets.load("font.ttf", BitmapFont.class, fontParameter);
+
         // pocaka, da se nalozijo vse datoteke
         assets.finishLoading();
+
+        font = assets.get("font.ttf");
 
         camera = new OrthographicCamera();
 
