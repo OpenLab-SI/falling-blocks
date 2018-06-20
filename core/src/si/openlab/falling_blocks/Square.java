@@ -16,6 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 public class Square extends Actor {
+    static float size = 1;
+    static float halfSize = size / 2;
+
     // staticna polja za definicije oblike in telesa
     // (staticna, ker so enaka za vse kvadrate)
     static BodyDef bodyDef;
@@ -24,7 +27,7 @@ public class Square extends Actor {
     static {
         // doloci obliko nasega kvadrata
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.5f, 0.5f);
+        shape.setAsBox(halfSize, halfSize);
 
         // doloci fizikalne lastnosti kvadrata
         fixtureDef = new FixtureDef();
@@ -44,7 +47,7 @@ public class Square extends Actor {
     Square(float x, float y, Color color, FallingBlocks game) {
         this.game = game;
 
-        setSize(1, 1);
+        setSize(size, size);
         setPosition(x, y);
         setColor(color);
 
@@ -76,7 +79,7 @@ public class Square extends Actor {
         } else {
             // postavi kvadrat na pravi polozaj
             // polozaji v Box2D (fiziki) so v srediscu predmetov, v libGDX (graficni del) pa v levem spodnjem kotu
-            bodyDef.position.set(getX() + 0.5f, getY() + 0.5f);
+            bodyDef.position.set(getX() + halfSize, getY() + halfSize);
             // ustvari telo
             body = game.world.createBody(bodyDef);
             // doda telesu kvadrat (sele tu to telo postane kvadrat)
@@ -88,7 +91,7 @@ public class Square extends Actor {
     public void act(float delta) {
         Vector2 position = body.getPosition();
         // polozaji v Box2D (fiziki) so v srediscu predmetov, v libGDX (graficni del) pa v levem spodnjem kotu
-        setPosition(position.x - 0.5f, position.y - 0.5f);
+        setPosition(position.x - halfSize, position.y - halfSize);
         // koti v Box2D (fiziki) so v radianih, libGDX (graficni del) pa uporablja stopinje
         setRotation(body.getAngle() * 180 / MathUtils.PI);
     }
@@ -98,6 +101,6 @@ public class Square extends Actor {
         batch.setColor(getColor());
         // za nastavljanje rotacije, je potrebno podati se nekaj drugih stvari
         // tukaj podamo: polozaj (x in y), center vrtenja (x in y), velikost (sirina in visina), razteg (po x in y), rotacijo
-        batch.draw(img, getX(), getY(), 0.5f, 0.5f, getWidth(), getHeight(), 1, 1, getRotation());
+        batch.draw(img, getX(), getY(), halfSize, halfSize, getWidth(), getHeight(), 1, 1, getRotation());
     }
 }
