@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
@@ -20,6 +22,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class FallingBlocks extends ApplicationAdapter {
     AssetManager assets;
@@ -31,8 +34,13 @@ public class FallingBlocks extends ApplicationAdapter {
     Stage stage;
     World world;
 
+    OrthographicCamera hudCamera;
+    ScreenViewport hudViewport;
+    SpriteBatch hud;
+
     Box2DDebugRenderer debugRenderer;
 
+    int score;
     float timer;
 
     @Override
@@ -59,7 +67,7 @@ public class FallingBlocks extends ApplicationAdapter {
         camera = new OrthographicCamera();
 
         // ustvari viewport, ki omeji velikost igre na velikost okna
-        viewport = new FitViewport(7.2f, 4.8f, camera);
+        viewport = new FitViewport(4.8f, 7.2f, camera);
         // centriraj igro
         viewport.apply(true);
 
@@ -72,6 +80,10 @@ public class FallingBlocks extends ApplicationAdapter {
 
         // nastavimo, da stage procesira vhode (klike ipd.)
         Gdx.input.setInputProcessor(stage);
+
+        hudCamera = new OrthographicCamera();
+        hudViewport = new ScreenViewport(hudCamera);
+        hud = new SpriteBatch();
 
         // omogoca izris fizikalnega modela igre (uporabno za iskanje napak)
         debugRenderer = new Box2DDebugRenderer();
@@ -98,8 +110,8 @@ public class FallingBlocks extends ApplicationAdapter {
         // simuliranje fizike sveta
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
-        // uporabi kamero
-        camera.update();
+        // uporabi kamer
+        viewport.apply();
 
         // posodobi polozaje kvadratov
         // bolj splosno, posodobi lastnosti, ki so odvisne od fizike
@@ -110,6 +122,19 @@ public class FallingBlocks extends ApplicationAdapter {
 
         // izrisemo fizikalni model igre
         debugRenderer.render(world, camera.combined);
+
+        hudViewport.apply();
+        hud.setProjectionMatrix(hudCamera.combined);
+        hud.begin();
+
+        String scoreText = Integer.toString(score);
+
+        GlyphLayout layout = new GlyphLayout();
+        layout.setText(font, scoreText);
+
+        font.draw(hud, scoreText, Gdx.graphics.getWidth() - layout.width - 16, Gdx.graphics.getHeight() - layout.height);
+
+        hud.end();
     }
 
     @Override
@@ -117,6 +142,7 @@ public class FallingBlocks extends ApplicationAdapter {
         // posodobi viewport z novo velikostjo zalona
         // (popravi parametre kamere, da ta prikazuje celo igro, omejeno z velikostjo okna)
         viewport.update(width, height);
+        hudViewport.update(width, height, true);
     }
 
     @Override

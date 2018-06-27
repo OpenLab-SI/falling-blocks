@@ -69,6 +69,8 @@ public class Square extends Actor {
                 event.getTarget().remove();
                 // alternativno: Square.this.remove();
 
+                Square.this.game.score++;
+
                 // povemo, da smo uspesno obdelali dogodek (dotik)
                 return true;
             }
