@@ -100,8 +100,8 @@ public class FallingBlocks extends ApplicationAdapter {
         if (timer > 0.5f) {
             timer -= 0.5f;
 
-            float x = MathUtils.random(7.2f - Square.size);
-            float y = 4.8f;
+            float x = MathUtils.random(viewport.getWorldWidth() - Square.size);
+            float y = viewport.getWorldHeight();
             Color color = Square.colors[MathUtils.random(Square.colors.length - 1)];
 
             stage.addActor(new Square(x, y, color, this));
