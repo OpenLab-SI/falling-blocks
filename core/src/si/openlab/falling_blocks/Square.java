@@ -107,6 +107,10 @@ public class Square extends Actor {
 
         // potisnemo kocko navzdol
         body.setLinearVelocity(0, -3);
+
+        if (position.y + size < 0) {
+            remove();
+        }
     }
 
     @Override

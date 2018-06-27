@@ -41,6 +41,7 @@ public class FallingBlocks extends ApplicationAdapter {
     Box2DDebugRenderer debugRenderer;
 
     int score;
+    int remainingSquares = 10;
     float timer;
 
     @Override
@@ -67,7 +68,7 @@ public class FallingBlocks extends ApplicationAdapter {
         camera = new OrthographicCamera();
 
         // ustvari viewport, ki omeji velikost igre na velikost okna
-        viewport = new FitViewport(4.8f, 7.2f, camera);
+        viewport = new FitViewport(7.2f, 4.8f, camera);
         // centriraj igro
         viewport.apply(true);
 
@@ -97,8 +98,9 @@ public class FallingBlocks extends ApplicationAdapter {
 
         timer += Gdx.graphics.getDeltaTime();
 
-        if (timer > 0.5f) {
+        if (timer > 0.5f && remainingSquares > 0) {
             timer -= 0.5f;
+            remainingSquares--;
 
             float x = MathUtils.random(viewport.getWorldWidth() - Square.size);
             float y = viewport.getWorldHeight();
@@ -148,5 +150,8 @@ public class FallingBlocks extends ApplicationAdapter {
     @Override
     public void dispose() {
         assets.dispose();
+        world.dispose();
+        hud.dispose();
+        debugRenderer.dispose();
     }
 }
