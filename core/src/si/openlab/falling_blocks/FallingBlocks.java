@@ -109,6 +109,10 @@ public class FallingBlocks extends ApplicationAdapter {
             stage.addActor(new Square(x, y, color, this));
         }
 
+        if (stage.getActors().size == 0 && remainingSquares == 0) {
+            // konec igre
+        }
+
         // simuliranje fizike sveta
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
