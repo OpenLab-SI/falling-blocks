@@ -33,8 +33,11 @@ public class Gameplay extends ScreenAdapter {
     Box2DDebugRenderer debugRenderer;
 
     int score;
-    int remainingSquares = 10;
     float timer;
+
+    float dropDelay;
+    int remainingSquares;
+    int requiredScore;
 
     Gameplay(FallingBlocks game) {
         this.game = game;
@@ -63,6 +66,21 @@ public class Gameplay extends ScreenAdapter {
 
         // omogoca izris fizikalnega modela igre (uporabno za iskanje napak)
         debugRenderer = new Box2DDebugRenderer();
+
+        // nastavimo vrednosti za level
+        if (game.level == 1) {
+            dropDelay = 1.5f;
+            remainingSquares = 10;
+            requiredScore = 5;
+        } else if (game.level == 2) {
+            dropDelay = 1f;
+            remainingSquares = 30;
+            requiredScore = 20;
+        } else {
+            dropDelay = 0.5f;
+            remainingSquares = 100;
+            requiredScore = 80;
+        }
     }
 
     @Override
@@ -73,8 +91,8 @@ public class Gameplay extends ScreenAdapter {
 
         timer += delta;
 
-        if (timer > 0.5f && remainingSquares > 0) {
-            timer -= 0.5f;
+        if (timer > dropDelay && remainingSquares > 0) {
+            timer -= dropDelay;
             remainingSquares--;
 
             float x = MathUtils.random(viewport.getWorldWidth() - Square.size);

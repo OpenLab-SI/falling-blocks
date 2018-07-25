@@ -41,14 +41,16 @@ public class StartScreen extends ScreenAdapter {
 
         viewport.apply();
 
-        GlyphLayout layout = new GlyphLayout(font, "Click to play!");
+        String text = "Level " + game.level;
+
+        GlyphLayout layout = new GlyphLayout(font, text);
 
         float x = (Gdx.graphics.getWidth() - layout.width) / 2f;
         float y = (Gdx.graphics.getHeight() + layout.height) / 2f;
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        font.draw(batch, "Click to play!",  x, y);
+        font.draw(batch, text, x, y);
         batch.end();
     }
 
