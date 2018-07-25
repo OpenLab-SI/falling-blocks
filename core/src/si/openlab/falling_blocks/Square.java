@@ -50,16 +50,16 @@ public class Square extends Actor {
 
     TextureRegion img;
     Body body;
-    FallingBlocks game;
+    Gameplay gameplay;
 
-    Square(float x, float y, Color color, FallingBlocks game) {
-        this.game = game;
+    Square(float x, float y, Color color, Gameplay gameplay) {
+        this.gameplay = gameplay;
 
         setSize(size, size);
         setPosition(x, y);
         setColor(color);
 
-        Texture texture = game.assets.get("square.png");
+        Texture texture = gameplay.game.assets.get("square.png");
         // TextureRegion je del teksture, v temu primeru, cela tekstura
         img = new TextureRegion(texture);
 
@@ -69,7 +69,7 @@ public class Square extends Actor {
                 event.getTarget().remove();
                 // alternativno: Square.this.remove();
 
-                Square.this.game.score++;
+                Square.this.gameplay.score++;
 
                 // povemo, da smo uspesno obdelali dogodek (dotik)
                 return true;
@@ -83,7 +83,7 @@ public class Square extends Actor {
 
         if (parent == null) {
             // odstrani telo iz sveta
-            game.world.destroyBody(body);
+            gameplay.world.destroyBody(body);
             // pobrise telo
             body = null;
         } else {
@@ -91,7 +91,7 @@ public class Square extends Actor {
             // polozaji v Box2D (fiziki) so v srediscu predmetov, v libGDX (graficni del) pa v levem spodnjem kotu
             bodyDef.position.set(getX() + halfSize, getY() + halfSize);
             // ustvari telo
-            body = game.world.createBody(bodyDef);
+            body = gameplay.world.createBody(bodyDef);
             // doda telesu kvadrat (sele tu to telo postane kvadrat)
             body.createFixture(fixtureDef);
         }
