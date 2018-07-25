@@ -103,7 +103,14 @@ public class Gameplay extends ScreenAdapter {
         }
 
         if (stage.getActors().size == 0 && remainingSquares == 0) {
-            game.setScreen(new StartScreen(game));
+            if (score < requiredScore) {
+                game.setScreen(new GameOverScreen("You lose!", game));
+            } else if (game.level < 3) {
+                game.level++;
+                game.setScreen(new StartScreen(game));
+            } else {
+                game.setScreen(new GameOverScreen("You win!", game));
+            }
             return;
         }
 

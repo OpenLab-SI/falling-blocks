@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class StartScreen extends ScreenAdapter {
+public class GameOverScreen extends ScreenAdapter {
     FallingBlocks game;
     BitmapFont font;
 
@@ -17,7 +17,10 @@ public class StartScreen extends ScreenAdapter {
     ScreenViewport viewport;
     SpriteBatch batch;
 
-    StartScreen(FallingBlocks game) {
+    String text;
+
+    GameOverScreen(String text, FallingBlocks game) {
+        this.text = text;
         this.game = game;
 
         font = game.assets.get("title.ttf");
@@ -30,7 +33,8 @@ public class StartScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         if (Gdx.input.isTouched()) {
-            game.setScreen(new Gameplay(game));
+            game.level = 1;
+            game.setScreen(new StartScreen(game));
             return;
         }
 
@@ -39,8 +43,6 @@ public class StartScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         viewport.apply();
-
-        String text = "Level " + game.level;
 
         GlyphLayout layout = new GlyphLayout(font, text);
 
