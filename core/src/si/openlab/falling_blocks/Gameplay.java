@@ -12,6 +12,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -53,6 +56,30 @@ public class Gameplay extends ScreenAdapter {
         // dodana scena (ali oder) nase igre
         // na tem "stage" se bo nahajala vecina elementov nase igre
         stage = new Stage(viewport);
+
+
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                // ce ni pritisnjen presledek, ne naredimo nic
+                if (keycode != 62) {
+                    return false;
+                }
+
+                for (Actor actor : stage.getActors()) {
+                    // zanimajo nas samo kvadrati
+                    if (actor instanceof Square) {
+                        // spremenimo igralca v kvadrat, if stavek poskrbi, da je to mogoce
+                        Square square = (Square) actor;
+
+                        // rahlo zavrtimo kvadrat
+                        square.body.applyAngularImpulse(100, true);
+                    }
+                }
+
+                return true;
+            }
+        });
 
         // dodan svet za fizikalne objekte
         world = new World(new Vector2(0, 0), true);
