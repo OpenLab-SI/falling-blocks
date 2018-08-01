@@ -52,7 +52,7 @@ public class Square extends Actor {
     Body body;
     Gameplay gameplay;
 
-    Square(float x, float y, Color color, Gameplay gameplay) {
+    Square(float x, float y, Color color, final Gameplay gameplay) {
         this.gameplay = gameplay;
 
         setSize(size, size);
@@ -69,7 +69,8 @@ public class Square extends Actor {
                 event.getTarget().remove();
                 // alternativno: Square.this.remove();
 
-                Square.this.gameplay.score++;
+                gameplay.levelScore++;
+                gameplay.game.score++;
 
                 // povemo, da smo uspesno obdelali dogodek (dotik)
                 return true;

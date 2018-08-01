@@ -13,7 +13,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoa
 
 public class FallingBlocks extends Game {
     AssetManager assets;
+
     int level = 1;
+    int score = 0;
 
     @Override
     public void create() {

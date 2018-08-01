@@ -1,16 +1,13 @@
 package si.openlab.falling_blocks;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class GameOverScreen extends ScreenAdapter {
-    FallingBlocks game;
+public class GameOverScreen extends GameScreen {
     BitmapFont font;
 
     OrthographicCamera camera;
@@ -20,8 +17,9 @@ public class GameOverScreen extends ScreenAdapter {
     String text;
 
     GameOverScreen(String text, FallingBlocks game) {
+        super(game);
+
         this.text = text;
-        this.game = game;
 
         font = game.assets.get("title.ttf");
 
@@ -32,15 +30,13 @@ public class GameOverScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+        super.render(delta);
+
         if (Gdx.input.isTouched()) {
             game.level = 1;
             game.setScreen(new StartScreen(game));
             return;
         }
-
-        // pobrisi zaslon
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         viewport.apply();
 
@@ -57,16 +53,13 @@ public class GameOverScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
+        super.resize(width, height);
         viewport.update(width, height, true);
     }
 
     @Override
-    public void hide() {
-        dispose();
-    }
-
-    @Override
     public void dispose() {
+        super.dispose();
         batch.dispose();
     }
 }

@@ -1,13 +1,8 @@
 package si.openlab.falling_blocks;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -17,25 +12,17 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class Gameplay extends ScreenAdapter {
-    FallingBlocks game;
-    BitmapFont font;
-
+public class Gameplay extends GameScreen {
     OrthographicCamera camera;
     FitViewport viewport;
 
     Stage stage;
     World world;
 
-    OrthographicCamera hudCamera;
-    ScreenViewport hudViewport;
-    SpriteBatch hud;
-
     Box2DDebugRenderer debugRenderer;
 
-    int score;
+    int levelScore;
     float timer;
 
     float dropDelay;
@@ -43,7 +30,8 @@ public class Gameplay extends ScreenAdapter {
     int requiredScore;
 
     Gameplay(FallingBlocks game) {
-        this.game = game;
+        super(game);
+
         font = game.assets.get("game.ttf");
 
         camera = new OrthographicCamera();
@@ -56,7 +44,6 @@ public class Gameplay extends ScreenAdapter {
         // dodana scena (ali oder) nase igre
         // na tem "stage" se bo nahajala vecina elementov nase igre
         stage = new Stage(viewport);
-
 
         stage.addListener(new InputListener() {
             @Override
@@ -87,10 +74,6 @@ public class Gameplay extends ScreenAdapter {
         // nastavimo, da stage procesira vhode (klike ipd.)
         Gdx.input.setInputProcessor(stage);
 
-        hudCamera = new OrthographicCamera();
-        hudViewport = new ScreenViewport(hudCamera);
-        hud = new SpriteBatch();
-
         // omogoca izris fizikalnega modela igre (uporabno za iskanje napak)
         debugRenderer = new Box2DDebugRenderer();
 
@@ -112,9 +95,7 @@ public class Gameplay extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        // pobrisi zaslon
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        super.render(delta);
 
         timer += delta;
 
@@ -130,7 +111,7 @@ public class Gameplay extends ScreenAdapter {
         }
 
         if (stage.getActors().size == 0 && remainingSquares == 0) {
-            if (score < requiredScore) {
+            if (levelScore < requiredScore) {
                 game.setScreen(new GameOverScreen("You lose!", game));
             } else if (game.level < 3) {
                 game.level++;
@@ -156,38 +137,21 @@ public class Gameplay extends ScreenAdapter {
 
         // izrisemo fizikalni model igre
         debugRenderer.render(world, camera.combined);
-
-        hudViewport.apply();
-        hud.setProjectionMatrix(hudCamera.combined);
-        hud.begin();
-
-        String scoreText = Integer.toString(score);
-
-        GlyphLayout layout = new GlyphLayout();
-        layout.setText(font, scoreText);
-
-        font.draw(hud, scoreText, Gdx.graphics.getWidth() - layout.width - 16, Gdx.graphics.getHeight() - layout.height);
-
-        hud.end();
     }
 
     @Override
     public void resize(int width, int height) {
+        super.resize(width, height);
+
         // posodobi viewport z novo velikostjo zalona
         // (popravi parametre kamere, da ta prikazuje celo igro, omejeno z velikostjo okna)
         viewport.update(width, height);
-        hudViewport.update(width, height, true);
-    }
-
-    @Override
-    public void hide() {
-        dispose();
     }
 
     @Override
     public void dispose() {
+        super.dispose();
         world.dispose();
-        hud.dispose();
         debugRenderer.dispose();
     }
 }
