@@ -34,6 +34,7 @@ public class GameOverScreen extends GameScreen {
 
         if (Gdx.input.isTouched()) {
             game.level = 1;
+            game.score = 0;
             game.setScreen(new StartScreen(game));
             return;
         }

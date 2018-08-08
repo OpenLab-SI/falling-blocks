@@ -2,48 +2,62 @@ package si.openlab.falling_blocks;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class StartScreen extends GameScreen {
     OrthographicCamera camera;
     ScreenViewport viewport;
-    SpriteBatch batch;
-    BitmapFont font;
+    Stage stage;
 
-    StartScreen(FallingBlocks game) {
+    StartScreen(final FallingBlocks game) {
         super(game);
 
         camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
-        batch = new SpriteBatch();
-        font = game.assets.get("title.ttf");
+        stage = new Stage(viewport);
+
+        Gdx.input.setInputProcessor(stage);
+
+        float centerX = (viewport.getWorldWidth() - MenuButton.width) / 2;
+        float topY = viewport.getWorldHeight();
+
+        stage.addActor(new MenuButton(centerX, topY - 100, "New game", this));
+        stage.addActor(new MenuButton(centerX, topY - 200, "Continue", this));
+
+        stage.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (event.getTarget() instanceof MenuButton) {
+                    MenuButton menuButton = (MenuButton) event.getTarget();
+
+                    if (menuButton.text.equals("New game")) {
+                        game.level = 1;
+                        game.score = 0;
+                        game.setScreen(new Gameplay(game));
+                    }
+
+                    if (menuButton.text.equals("Continue")) {
+                        game.setScreen(new Gameplay(game));
+                    }
+                }
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
 
-        if (Gdx.input.isTouched()) {
-            game.setScreen(new Gameplay(game));
-            return;
-        }
-
         viewport.apply();
-
-        String text = "Level " + game.level;
-
-        GlyphLayout layout = new GlyphLayout(font, text);
-
-        float x = (Gdx.graphics.getWidth() - layout.width) / 2f;
-        float y = (Gdx.graphics.getHeight() + layout.height) / 2f;
-
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        font.draw(batch, text, x, y);
-        batch.end();
+        stage.draw();
     }
 
     @Override
@@ -55,6 +69,6 @@ public class StartScreen extends GameScreen {
     @Override
     public void dispose() {
         super.dispose();
-        batch.dispose();
+
     }
 }
